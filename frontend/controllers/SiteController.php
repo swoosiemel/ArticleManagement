@@ -91,6 +91,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            Yii::$app->session->setFlash('success', 'You have successfully logged in.');
             return $this->goBack();
         }
 
@@ -109,7 +110,7 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
+        Yii::$app->session->setFlash('success', 'You have successfully logged out.');
         return $this->goHome();
     }
 
