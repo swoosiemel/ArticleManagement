@@ -6,7 +6,9 @@ use app\models\Article;
 use app\models\ArticleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -70,6 +72,7 @@ class ArticleController extends Controller
         $model = new Article();
 
         if ($this->request->isPost) {
+            $model->user_id = Yii::$app->user->id;
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -122,13 +125,17 @@ class ArticleController extends Controller
      * @param int $id ID
      * @return Article the loaded model
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne(['id' => $id])) !== null) {
-            return $model;
+        $model = Article::findOne($id);
+    
+        if ($model === null || $model->user_id !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException('You are not allowed to access this article.');
         }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+    
+        return $model;
     }
+
 }

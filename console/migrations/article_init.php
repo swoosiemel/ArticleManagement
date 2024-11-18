@@ -12,10 +12,9 @@ public function safeUp()
         'content' => $this->text()->notNull(),
         'user_id' => $this->integer()->notNull(),
         'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-        'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->append('ON UPDATE CURRENT_TIMESTAMP'),
+        'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
     ]);
 
-    // Add foreign key for user_id
     $this->addForeignKey(
         'fk-article-user_id',
         'article',

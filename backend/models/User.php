@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use frontend\models\Article;
 /**
  * This is the model class for table "user".
  *
@@ -73,4 +74,6 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::class, ['user_id' => 'id']);
     }
+
+
 }
