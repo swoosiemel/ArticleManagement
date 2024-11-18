@@ -1,9 +1,6 @@
 <?php
 
-namespace app\models;
-
-use Yii;
-use app\models\Article;
+namespace backend\models;
 
 /**
  * This is the model class for table "user".
@@ -19,10 +16,11 @@ use app\models\Article;
  * @property int $updated_at
  * @property string|null $verification_token
  *
- * @property Article[] $articles
+
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord 
 {
+    const STATUS_ACTIVE = 10;
     public $repeat_password;
     /**
      * {@inheritdoc}
@@ -71,14 +69,8 @@ class User extends \yii\db\ActiveRecord
             'verification_token' => 'Verification Token',
         ];
     }
-
-    /**
-     * Gets query for [[Articles]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getArticles()
+    public function getUser()
     {
-        return $this->hasMany(Article::class, ['user_id' => 'id']);
+        return $this->hasMany(User::class, ['user_id' => 'id']);
     }
 }
