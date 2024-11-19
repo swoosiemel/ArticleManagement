@@ -33,7 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'slug',
             'content:ntext',
-            'user_id',
+            [
+                'attribute' => 'user_id',
+                'label' => 'Author',
+                'value' => $model->user ? $model->user->username : 'Unknown', // Show username via relation
+            ],
             'created_at',
             'updated_at',
         ],

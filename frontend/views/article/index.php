@@ -33,9 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'slug',
             'content:ntext',
-            'user_id',
-            //'created_at',
-            //'updated_at',
+            [
+                'attribute' => 'user_id',
+                'label' => 'Author',
+                'value' => function ($model) {
+                    return $model->user ? $model->user->username : 'Unknown'; // Get username via relation
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Article $model, $key, $index, $column) {

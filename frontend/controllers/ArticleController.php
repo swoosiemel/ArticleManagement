@@ -129,9 +129,18 @@ class ArticleController extends Controller
      */
     protected function findModel($id)
     {
+        // Fetch the article
         $model = Article::findOne($id);
+        
+        // If the model doesn't exist, throw a 404 exception
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested article does not exist.');
+        }
     
-        if ($model === null || $model->user_id !== Yii::$app->user->id) {
+        // Check ownership only for actions that require it (update, delete)
+        $action = Yii::$app->controller->action->id;
+        if (in_array($action, ['update', 'delete', 'create']) && $model->user_id !== Yii::$app->user->id) {
+            // If the user is not the owner, deny access
             throw new ForbiddenHttpException('You are not allowed to access this article.');
         }
     
