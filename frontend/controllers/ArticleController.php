@@ -69,6 +69,12 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
+        // Check if the user is not logged in (guest)
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->session->setFlash('error', 'You must be logged in to create an article.');
+            return $this->redirect(['site/login']);
+        }
+        // Proceed with article creation if the user is logged in
         $model = new Article();
 
         if ($this->request->isPost) {
